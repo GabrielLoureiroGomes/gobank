@@ -2,55 +2,55 @@ package main
 
 import (
 	"fmt"
-	cc "gobank/clientes"
-	c "gobank/contas"
+	c "gobank/accounts"
+	cc "gobank/holders"
 )
 
 func main() {
 
-	jessica := cc.CriaCliente("Jéssica", "222.222.222-22", "Psicóloga")
-	gabriel := cc.CriaCliente("Gabriel", "111.111.111-11", "Desenvolvedor")
+	jessica := cc.CreateHolder("Jéssica", "222.222.222-22", "Psychologist")
+	gabriel := cc.CreateHolder("Gabriel", "111.111.111-11", "Developer")
 
 	fmt.Println(jessica)
 	fmt.Println(gabriel)
 
-	contaCorrenteGabriel := c.CriaConta("Gabriel", 111, 111222, 500)
-	contaCorrenteJessica := c.CriaConta("Jessica", 222, 333444, 500)
+	checkingAccountGabriel := c.CreateAccount("Gabriel", 111, 111222, 500)
+	checkingAccountJessica := c.CreateAccount("Jessica", 222, 333444, 500)
 
-	fmt.Println(contaCorrenteGabriel.ObterSaldo())
-	fmt.Println(contaCorrenteJessica.ObterSaldo())
+	fmt.Println(checkingAccountGabriel.GetBalance())
+	fmt.Println(checkingAccountJessica.GetBalance())
 
-	contaCorrenteGabriel.Depositar(2000)
-	contaCorrenteJessica.Sacar(250)
+	checkingAccountGabriel.Deposit(2000)
+	checkingAccountJessica.Withdraw(250)
 
-	fmt.Println(contaCorrenteGabriel.ObterSaldo())
-	fmt.Println(contaCorrenteJessica.ObterSaldo())
+	fmt.Println(checkingAccountGabriel.GetBalance())
+	fmt.Println(checkingAccountJessica.GetBalance())
 
-	contaCorrenteGabriel.Sacar(500)
-	contaCorrenteJessica.Depositar(750)
+	checkingAccountGabriel.Withdraw(500)
+	checkingAccountJessica.Deposit(750)
 
-	fmt.Println(contaCorrenteGabriel.ObterSaldo())
-	fmt.Println(contaCorrenteJessica.ObterSaldo())
+	fmt.Println(checkingAccountGabriel.GetBalance())
+	fmt.Println(checkingAccountJessica.GetBalance())
 
-	contaCorrenteGabriel.Transferir(500, &contaCorrenteJessica)
+	checkingAccountGabriel.Transfer(500, &checkingAccountJessica)
 
-	fmt.Println(contaCorrenteGabriel.ObterSaldo())
-	fmt.Println(contaCorrenteJessica.ObterSaldo())
+	fmt.Println(checkingAccountGabriel.GetBalance())
+	fmt.Println(checkingAccountJessica.GetBalance())
 
-	contaPoupancaGabriel := c.ContaPoupanca{}
-	fmt.Println(contaPoupancaGabriel)
+	savingAccountGabriel := c.SavingAccount{}
+	fmt.Println(savingAccountGabriel)
 
-	contaPoupancaGabriel.Depositar(1000)
-	fmt.Println(contaPoupancaGabriel.ObterSaldo())
-	PagarBoleto(&contaPoupancaGabriel, 900)
-	fmt.Println(contaPoupancaGabriel.ObterSaldo())
+	savingAccountGabriel.Deposit(1000)
+	fmt.Println(savingAccountGabriel.GetBalance())
+	PayBillet(&savingAccountGabriel, 900)
+	fmt.Println(savingAccountGabriel.GetBalance())
 
 }
 
-func PagarBoleto(conta verificaConta, valorBoleto float64) {
-	conta.Sacar(valorBoleto)
+func PayBillet(account verifyAccount, billetValue float64) {
+	account.Withdraw(billetValue)
 }
 
-type verificaConta interface {
-	Sacar(valor float64) string
+type verifyAccount interface {
+	Withdraw(withdrawValue float64) string
 }
